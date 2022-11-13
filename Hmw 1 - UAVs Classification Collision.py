@@ -12,6 +12,13 @@ import numpy as np
 from sklearn import svm
 import matplotlib.pyplot as plt
 from sklearn.linear_model import Perceptron
+import sklearn.metrics 
+from sklearn import datasets
+from sklearn.model_selection import train_test_split, cross_val_score, ShuffleSplit, GridSearchCV
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.utils.multiclass import unique_labels
+import matplotlib.pyplot as plt
 
 
 def import_dataset():
@@ -48,20 +55,7 @@ def import_dataset():
 
     
 def split_dataset(X,T):
-    import random
-    import numpy as np
-    import sklearn.metrics 
-    from sklearn import datasets
-    from sklearn.model_selection import train_test_split, cross_val_score, ShuffleSplit, GridSearchCV
-    from sklearn import svm
-    from sklearn import tree
-    from sklearn.naive_bayes import GaussianNB
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.metrics import classification_report, confusion_matrix
-    from sklearn.utils.multiclass import unique_labels
-    import matplotlib.pyplot as plt
-
-
+    # This function split the dataset in train set e test set
     # Split the data
     X_train, X_test, y_train, y_test = train_test_split(X, T, test_size=0.333, 
                                                     random_state=117)
@@ -188,6 +182,8 @@ class FisherDiscriminant:
         
         
 if __name__ == '__main__':
+    print('Run the program ...\n')
+    
     # Format the dataset
     X,t = import_dataset()
     
@@ -219,3 +215,13 @@ if __name__ == '__main__':
     # Fit Classifier
     # train the classifier
     classifier.fit(X_train,y_train)
+    
+    # Prediction
+    y_pred = classifier.predict(X_test)
+    
+    # evaluate Accuracy
+    acc = classifier.score(X_test, y_test)    
+    print("\nAccuracy %.3f" %acc)
+    
+    # evluate Precision and Recall
+    #print(classification_report(y_test, y_pred, labels=None, target_names=t, digits=3))
