@@ -4,6 +4,7 @@ Created on Sun Nov 13 10:13:02 2022
 
 @author: Simone
 
+#In this program we use GaussianNaiveBayes
 """
 
 # Import libraries that contains the implementations of the functions used in the rest of the program.
@@ -62,7 +63,14 @@ def split_dataset(X,T):
     X_train, X_test, y_train, y_test = train_test_split(X, T, test_size=0.333, 
                                                     random_state=117)
     return X_train, X_test, y_train, y_test
-
+    # svm
+    # test_size 0.333
+    # random state 117
+    # accuracy 0.55
+    
+    # test_size 0.350
+    # random state 110
+    # accuracy 0.56
 
 def plot_confusion_matrix(y_true, y_pred, classes,
                           normalize=False,
@@ -212,4 +220,4 @@ if __name__ == '__main__':  # Main Programm
     # scores = cross_val_score(model, X, t, cv=cv)
     # print(scores)
     # print("Accuracy: %0.3f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
-  
+   
