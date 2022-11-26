@@ -41,7 +41,7 @@ def import_dataset_3():
 
 
 def plot_distribution(outcomes):
-    plt.hist(outcomes, bins=25, density=True, alpha=0.6, color='b')
+    plt.hist(outcomes, bins=25, color='b')
     plt.show()
 
 
@@ -59,7 +59,7 @@ def split_dataset(X,T):
     # accuracy 0.56
 
     # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X, T, test_size=0.333,
+    X_train, X_test, y_train, y_test = train_test_split(X, T, test_size=0.650,
                                                     random_state=117)
     return X_train, X_test, y_train, y_test
 
@@ -132,7 +132,7 @@ def balance_dataset_undersampling(X,t):
 def balance_dataset_Oversampling(X,t):
     #random unsumpling - balance the dataset
     from imblearn.over_sampling import RandomOverSampler
-    rus = RandomOverSampler(sampling_strategy='not majority')
+    rus = RandomOverSampler(sampling_strategy={1:450, 2:380, 3:370, 4:320}) #50,23
     X, t = rus.fit_resample(X, t)
     return X,t
 
@@ -143,12 +143,14 @@ def balance_dataset_SMOTE(X,t):
     X, t = over_sampler.fit_resample(X, t)
     return X,t
 
+
 if __name__ == '__main__':  # Main Programm
     print('Run the program ...\n')
 
 
     # 1. Format the dataset
     X, t = import_dataset_3()
+    X,t = balance_dataset_Oversampling(X, t)
 
     # 2. list of class
     class_names = np.array([str(c) for c in range(0,5)])
@@ -163,8 +165,8 @@ if __name__ == '__main__':  # Main Programm
 
     # 5. Balance the dataset
     # 5.1 Balance the dataset with oversampling
-    X_train, y_train = balance_dataset_Oversampling(X_train, y_train)
-    X_test, y_test = balance_dataset_Oversampling(X_test, y_test)
+    # X_train, y_train = balance_dataset_Oversampling(X_train, y_train)
+    # X_test, y_test = balance_dataset_Oversampling(X_test, y_test)
 
     # 5.2 Balance the dataset with undersampling
     # X_train, y_train = balance_dataset_undersampling(X_train, y_train)
@@ -178,15 +180,20 @@ if __name__ == '__main__':  # Main Programm
     plot_distribution(y_test)
 
 
-    # model = Perceptron() # accuracy 0.53
-    # eta = 0.001
-    # niter = 1000
-    # model.eta = eta
-    # model.niter = niter
+
     # model = BernoulliNB() # accuracy 0.51
     # model = GaussianNB() # accuracy 0.48
     # model = LogisticRegression() #accuracy 0.53
-    model = svm.SVC(kernel='linear', C=5) # accuracy 0.55 best model
+    # SVM method
+    params = {
+                'C': [0.1, 0.001, 1.0],
+                'gamma': [0.1, 1.0, 10],
+                'kernel': ['rbf', 'poly', 'sigmoid', 'linear']
+              }
+    model_svm = svm.SVC()
+    # Grid Search
+    model_method = model_svm
+    model = GridSearchCV(model_method, params, cv=3) # accuracy 0.55 best model
     #model = SimplePerceptron()
 
 
