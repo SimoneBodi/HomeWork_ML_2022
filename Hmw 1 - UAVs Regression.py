@@ -99,7 +99,7 @@ if __name__ == '__main__':  # Main Programm
 
     # 6. Chose the model
 
-    model_type = "linear_svm"  # "linear_regression", "linear_svm", "poly_svm"
+    model_type = "poly_svm"  # "linear_regression", "linear_svm", "poly_svm"
 
     if model_type == "linear_regression":
       # Create linear regression object
@@ -115,7 +115,7 @@ if __name__ == '__main__':  # Main Programm
     
     elif model_type == "poly_svm":
       # SVM polynomial regression
-      model = SVR(kernel='poly', C=1.5, degree=3, gamma='scale')
+      model = SVR(kernel='poly', C=0.1, degree=4, gamma='scale') #c=1.5, degree=3
       # Train the model using the training sets
       model.fit(X_train, y_train)
       
@@ -128,7 +128,7 @@ if __name__ == '__main__':  # Main Programm
     # Plot outputs
     for i in range(1,34):
         plt.scatter(X_test.iloc[:,i:i+1], y_test,  color='black')
-        plt.scatter(X_test.iloc[:,i:i+1], y_pred, color='red', linewidth=3)
+        plt.scatter(X_test.iloc[:,i:i+1], y_pred, color='red', linewidth=1)
         plt.xticks(())
         plt.yticks(())
         plt.show()
