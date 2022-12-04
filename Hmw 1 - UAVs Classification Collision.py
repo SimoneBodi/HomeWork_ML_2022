@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Nov 13 10:13:02 2022
-
+Created on Sat Dec  3 19:00:21 2022
 @author: Simone
-
+Created on Sun Nov 13 10:13:02 2022
+@author: Simone
 #In this program we use GaussianNaiveBayes
 """
 
@@ -31,7 +31,7 @@ warnings.filterwarnings('ignore')
 
 def import_dataset_3():
     # https://www.youtube.com/watch?v=4SivdTLIwHc
-    dataset = pd.read_csv("C:\\Users\\Simon\Desktop\\CS Magistrale\\Machine Learning\\Homework 1\\train_set_hmw_1.tsv", sep='\t', header=0)
+    dataset = pd.read_csv("train_set.tsv", sep='\t', header=0)
     X = dataset.drop(['num_collisions'], axis=1)
     y = dataset['num_collisions']
     X = X.drop(['min_CPA'], axis=1)
@@ -46,6 +46,10 @@ def plot_distribution(outcomes):
 
 
 def split_dataset(X,T):
+    test_size = 0.333
+    random_state = 7
+    print('\ntest size',test_size)
+    print('random state', random_state)
     # This function split the dataset in train set e test set
 
     # note for testing
@@ -59,8 +63,8 @@ def split_dataset(X,T):
     # accuracy 0.56
 
     # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X, T, test_size=0.650,
-                                                    random_state=117)
+    X_train, X_test, y_train, y_test = train_test_split(X, T, test_size=test_size,
+                                                    random_state=random_state)
     return X_train, X_test, y_train, y_test
 
 
@@ -130,9 +134,12 @@ def balance_dataset_undersampling(X,t):
 
 
 def balance_dataset_Oversampling(X,t):
+    simple_strategy = {2: 190, 3: 150, 4: 100}
+    print('\nSimple strategy: ',simple_strategy)
+    
     #random unsumpling - balance the dataset
     from imblearn.over_sampling import RandomOverSampler
-    rus = RandomOverSampler(sampling_strategy={1:450, 2:380, 3:370, 4:320}) #50,23
+    rus = RandomOverSampler(sampling_strategy=simple_strategy) #{1:450, 2:380, 3:370, 4:320}) 
     X, t = rus.fit_resample(X, t)
     return X,t
 
@@ -150,7 +157,7 @@ if __name__ == '__main__':  # Main Programm
 
     # 1. Format the dataset
     X, t = import_dataset_3()
-    X,t = balance_dataset_Oversampling(X, t)
+    # X,t = balance_dataset_Oversampling(X, t)
 
     # 2. list of class
     class_names = np.array([str(c) for c in range(0,5)])
@@ -160,12 +167,12 @@ if __name__ == '__main__':  # Main Programm
     X_train, X_test, y_train, y_test = split_dataset(X,t)
 
     # 4. plot y distrribution
-    plot_distribution(y_train)
-    plot_distribution(y_test)
+    # plot_distribution(y_train)
+    # plot_distribution(y_test)
 
     # 5. Balance the dataset
     # 5.1 Balance the dataset with oversampling
-    # X_train, y_train = balance_dataset_Oversampling(X_train, y_train)
+    X_train, y_train = balance_dataset_Oversampling(X_train, y_train)
     # X_test, y_test = balance_dataset_Oversampling(X_test, y_test)
 
     # 5.2 Balance the dataset with undersampling
@@ -177,7 +184,7 @@ if __name__ == '__main__':  # Main Programm
 
     # 6. plot y distrribution
     plot_distribution(y_train)
-    plot_distribution(y_test)
+    # plot_distribution(y_test)
 
 
 
