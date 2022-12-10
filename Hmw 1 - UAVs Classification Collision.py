@@ -253,4 +253,3 @@ if __name__ == '__main__':  # Main Programm
     scores = cross_val_score(model, X, t, cv=cv)
     print(scores)
     print("Accuracy: %0.3f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
-    
